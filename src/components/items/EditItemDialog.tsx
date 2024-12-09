@@ -12,7 +12,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Combobox } from "@/components/ui/combobox";
 import {
   Select,
   SelectContent,
@@ -79,7 +78,7 @@ interface EditItemDialogProps {
 }
 
 export function EditItemDialog({ item, isOpen, onClose, onSave }: EditItemDialogProps) {
-  const { register, handleSubmit, setValue, reset, formState: { errors }, watch, control } = useForm<z.infer<typeof formSchema>>({
+  const { register, handleSubmit, setValue, reset, formState: { errors }, watch } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: item.name,
@@ -158,12 +157,21 @@ export function EditItemDialog({ item, isOpen, onClose, onSave }: EditItemDialog
 
           <div>
             <Label>Catégorie</Label>
-            <Combobox
-              items={categories}
-              placeholder="Sélectionnez une catégorie"
-              onSelect={(value) => setValue("category", value)}
+            <Select 
               defaultValue={item.category}
-            />
+              onValueChange={(value) => setValue("category", value, { shouldValidate: true })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionnez une catégorie" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             {errors.category && (
               <p className="text-sm text-red-500 mt-1">{errors.category.message}</p>
             )}
@@ -171,12 +179,21 @@ export function EditItemDialog({ item, isOpen, onClose, onSave }: EditItemDialog
 
           <div>
             <Label>Emplacement</Label>
-            <Combobox
-              items={locations}
-              placeholder="Sélectionnez un emplacement"
-              onSelect={(value) => setValue("location", value)}
+            <Select 
               defaultValue={item.location}
-            />
+              onValueChange={(value) => setValue("location", value, { shouldValidate: true })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionnez un emplacement" />
+              </SelectTrigger>
+              <SelectContent>
+                {locations.map((location) => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             {errors.location && (
               <p className="text-sm text-red-500 mt-1">{errors.location.message}</p>
             )}
@@ -202,26 +219,25 @@ export function EditItemDialog({ item, isOpen, onClose, onSave }: EditItemDialog
           </div>
 
           <div>
+            <Label htmlFor="purchaseLink">Lien d'achat (optionnel)</Label>
+            <Input
+              id="purchaseLink"
+              {...register("purchaseLink")}
+              className="mt-1"
+              placeholder="https://..."
+            />
+            {errors.purchaseLink && (
+              <p className="text-sm text-red-500 mt-1">{errors.purchaseLink.message}</p>
+            )}
+          </div>
+
+          <div>
             <Label htmlFor="notes">Notes (optionnel)</Label>
             <Input
               id="notes"
               {...register("notes")}
               className="mt-1"
             />
-          </div>
-
-          <div>
-            <Label htmlFor="purchaseLink">Lien d'achat (optionnel)</Label>
-            <Input
-              id="purchaseLink"
-              type="url"
-              {...register("purchaseLink")}
-              placeholder="Ex: https://www.amazon.fr/..."
-              className="mt-1"
-            />
-            {errors.purchaseLink && (
-              <p className="text-sm text-red-500 mt-1">{errors.purchaseLink.message}</p>
-            )}
           </div>
 
           <div className="flex flex-row items-start space-x-3 space-y-0 py-4">
