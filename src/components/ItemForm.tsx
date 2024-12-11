@@ -85,7 +85,30 @@ export function ItemForm() {
         optimalStock: data.stockManagementEnabled ? data.optimalStock : undefined,
       };
       await addItem(itemData);
-      reset(); 
+      
+      // Sauvegarder les valeurs actuelles
+      const currentCategory = data.category;
+      const currentLocation = data.location;
+      const currentCondition = data.condition;
+      const currentStockManagement = data.stockManagementEnabled;
+      const currentMinStock = data.minStock;
+      const currentOptimalStock = data.optimalStock;
+
+      // Réinitialiser le formulaire
+      reset();
+
+      // Restaurer les valeurs sauvegardées
+      setValue('category', currentCategory);
+      setValue('location', currentLocation);
+      if (currentCondition) {
+        setValue('condition', currentCondition);
+      }
+      if (currentStockManagement) {
+        setValue('stockManagementEnabled', currentStockManagement);
+        if (currentMinStock) setValue('minStock', currentMinStock);
+        if (currentOptimalStock) setValue('optimalStock', currentOptimalStock);
+      }
+
       toast({
         title: 'Objet ajouté avec succès',
         description: `${data.name} a été ajouté à l'inventaire.`,
