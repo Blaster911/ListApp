@@ -90,7 +90,7 @@ export function EditItemDialog({ item, isOpen, onClose, onSave }: EditItemDialog
       minStock: item.minStock,
       optimalStock: item.optimalStock,
       condition: item.condition,
-      notes: item.notes,
+      notes: item.notes || '',
     },
   });
 
@@ -106,7 +106,7 @@ export function EditItemDialog({ item, isOpen, onClose, onSave }: EditItemDialog
         minStock: item.minStock,
         optimalStock: item.optimalStock,
         condition: item.condition,
-        notes: item.notes,
+        notes: item.notes || '',
       });
     }
   }, [isOpen, item, reset]);
@@ -158,11 +158,11 @@ export function EditItemDialog({ item, isOpen, onClose, onSave }: EditItemDialog
           <div>
             <Label>Catégorie</Label>
             <Select 
-              defaultValue={item.category}
+              value={item.category}
               onValueChange={(value) => setValue("category", value, { shouldValidate: true })}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Sélectionnez une catégorie" />
+                <SelectValue placeholder="Sélectionnez une catégorie">{item.category}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {categories.map((category) => (
@@ -180,11 +180,11 @@ export function EditItemDialog({ item, isOpen, onClose, onSave }: EditItemDialog
           <div>
             <Label>Emplacement</Label>
             <Select 
-              defaultValue={item.location}
+              value={item.location}
               onValueChange={(value) => setValue("location", value, { shouldValidate: true })}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Sélectionnez un emplacement" />
+                <SelectValue placeholder="Sélectionnez un emplacement">{item.location}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {locations.map((location) => (

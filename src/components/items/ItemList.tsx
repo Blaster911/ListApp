@@ -103,9 +103,14 @@ export function ItemList() {
           .sort(([locA], [locB]) => locA.toLowerCase().localeCompare(locB.toLowerCase()))
           .map(([location, locationItems]) => (
           <div key={location} className="glass rounded-xl p-4 shadow-sm hover:shadow-md transition-all">
-            <h3 className="text-base font-medium text-primary/90 border-b border-border/50 pb-2 mb-3 flex items-center">
-              <BedDouble className="h-4 w-4 mr-2 text-primary/70" />
-              {location}
+            <h3 className="text-lg font-semibold pb-3 mb-4 flex items-center border-b border-purple-100/20">
+              <div className="flex items-center bg-gradient-to-r from-purple-600/90 to-fuchsia-600/90 text-white px-3 py-1.5 rounded-lg shadow-sm">
+                <BedDouble className="h-5 w-5 mr-2" />
+                {location}
+              </div>
+              <div className="ml-3 text-sm text-purple-600/60 font-medium">
+                {locationItems.length} {locationItems.length > 1 ? 'objets' : 'objet'}
+              </div>
             </h3>
             <div className="grid gap-3">
               {locationItems
